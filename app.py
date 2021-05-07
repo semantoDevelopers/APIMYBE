@@ -21,8 +21,12 @@ db_order.config(app)
 
 
 #REGISTER BLUEPRINTS
-app.register_blueprint(user, '/user')
-app.register_blueprint(order, '/order')
-app.register_blueprint(products,'/products')
-app.register_blueprint(review,'/review')
-app.register_blueprint(payment,'/payment')
+app.register_blueprint(user, url_prefix='/user')
+app.register_blueprint(order, url_prefix='/order')
+app.register_blueprint(products,url_prefix='/products')
+app.register_blueprint(review,url_prefix='/review')
+app.register_blueprint(payment,url_prefix='/payment')
+
+
+if __name__=='__main__':
+    app.run(debug=True,host='0.0.0.0',port=5000)

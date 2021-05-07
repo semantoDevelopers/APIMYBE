@@ -9,11 +9,11 @@ db_products = DatabaseProducts()
 def get_all_products():
     pass
 
-@products.route('/<storeid:int>',methods=['GET'])
+@products.route('/<int:storeid>',methods=['GET'])
 def get_products_of_store(storeid):
     pass
 
-@products.route('/<catid:int>',methods=['GET'])
+@products.route('/<int:catid>',methods=['GET'])
 def get_products_of_category(catid):
     pass
 

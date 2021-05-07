@@ -37,22 +37,28 @@ class DatabaseUser:
 
     def register_user_data(self,data):
         conn, cursor = self.getConnection()
-        query = "INSERT INTO users(secret_key,name,surname,email,password,phone_number,address,token,favorites) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        tuple = (generate_secret_key_user(),data['name'],data['surname'],shaCryptData(data['email']),shaCryptData(data['password']),shaCryptData(data['phone_number']),shaCryptData(data['address']),json.dumps({}),token)
-        try:
-            cursor.execute(query,tuple)
-            conn.close()
-            return {'error':None, 'message':'User registered now confirm with code'}
-        except Exception as e:
-            return {'error':str(e), 'message':'There was an error during registration'}
+
+        if(self.get_user_data(data['email'],data['password'])['error']==None):
+            return {'error':None, 'message':'User already registered'}
+        else:
+            query = "INSERT INTO users(secret_key,name,surname,email,password,phone_number,address,token) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+            tuple = (generate_secret_key_user(),data['name'],data['surname'],shaCryptData(data['email']),shaCryptData(data['password']),data['phone_number'],data['address'],data['token'])
+            try:
+                cursor.execute(query,tuple)
+                conn.commit()
+                conn.close()
+                return {'error':None, 'message':'User registered now confirm with code'}
+            except Exception as e:
+                return {'error':str(e), 'message':'There was an error during registration'}
         
         
     def modify_user_data(self,data,secret_key):
         conn, cursor = self.getConnection()
-        query = "UPDATE users WHERE name=%s,surname=%s,email=%s,password=%s,phone_number=%s,address=%s WHERE secret_key=%s"
-        tuple = (data['name'],data['surname'],shaCryptData(data['email']),shaCryptData(data['password']),shaCryptData(data['phone_number']),shaCryptData(data['address']),secret_key)
+        query = "UPDATE users SET name=%s,surname=%s,email=%s,password=%s,phone_number=%s,address=%s WHERE secret_key=%s AND id=%s"
+        tuple = (data['name'],data['surname'],shaCryptData(data['email']),shaCryptData(data['password']),data['phone_number'],data['address'],secret_key,id)
         try:
             cursor.execute(query,tuple)
+            conn.commit()
             conn.close()
             return {'error':None, 'message':'User data modified succesfully'}
         except Exception as e:

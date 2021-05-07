@@ -1,4 +1,6 @@
 from Crypto.Hash import SHA256
+import string
+import secrets
 #From String data return a SHA256 String 
 def shaCryptData(data):
     sha = SHA256.new()

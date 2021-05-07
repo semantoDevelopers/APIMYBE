@@ -1,10 +1,12 @@
 from flask import Blueprint,request
 import os
 from .db_user import DatabaseUser
+from dotenv import load_dotenv
 from utils.checkheaders import check_headers
 from utils.errors import error400,error403
 
 user = Blueprint('user',__name__)
+load_dotenv()
 secret_key = os.environ['SECRET_KEY']
 db_user = DatabaseUser()
 
@@ -12,7 +14,7 @@ db_user = DatabaseUser()
 def login():
     check_result = check_headers(request,secret_key)
     if check_result==200:
-        data = db_user.get_user_data(request['email'],request['password'])
+        data = db_user.get_user_data(request.json['email'],request.json['password'])
         return data
     else:
         if check_result==403:
@@ -35,8 +37,8 @@ def register():
 
 
 
-@user.route('/<id:int>',methods=['PUT'])
-def modify_user_data(id):
+@user.route('/',methods=['PUT'])
+def modify_user_data():
     check_result = check_headers(request,secret_key)
     if check_result==200:
         data = db_user.modify_user_data(request.json,request.headers['USERKEY'])
