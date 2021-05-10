@@ -7,7 +7,7 @@ from utils.errors import error400,error403
 
 user = Blueprint('user',__name__)
 load_dotenv()
-secret_key = os.environ['SECRET_KEY']
+secret_key = os.environ['API_SECRET_KEY']
 db_user = DatabaseUser()
 
 @user.route('/login',methods=['POST'])
