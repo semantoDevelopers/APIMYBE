@@ -17,9 +17,12 @@ class DatabaseUser:
         return conn, cursor
 
     def check_if_data_is_retrieved(self, data):
+	print(len(data))
         if len(data) < 1:
+		print(len(data))
             return False
         else:
+		print(len(data))
             return True
 
     def get_user_data(self, email, password):
