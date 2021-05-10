@@ -27,11 +27,12 @@ class DatabaseUser:
         query = "SELECT * FROM users WHERE email=%s AND password=%s"
         tuple = (shaCryptData(email), shaCryptData(password))
         cursor.execute(query, tuple)
-        data = cursor.fetchall()[0]
-        conn.close()
-        if(self.check_if_data_is_retrieved(data)):
+        if(self.check_if_data_is_retrieved(cursor.fetchall())):
+            data = cursor.fetchall()[0]
+            conn.close()
             return {'error': None, 'user': {'id': data[0], 'secret_key': data[1], 'name': data[2], 'surname': data[3], 'email': data[4], 'phone_number': data[6], 'address': data[7], 'fiscal_code': data[8], 'favorites': data[9], 'media_id': data[10]}}
         else:
+            conn.close()
             return {'error':'Email or Password incorrect','user':{}}
 
 
