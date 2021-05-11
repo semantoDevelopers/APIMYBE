@@ -1,2 +1,2 @@
 error403={'error':'Invalid token'}
-error400={'error':'Eequest Malformed'}
+error400={'error':'Request Malformed'}
