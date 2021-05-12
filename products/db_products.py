@@ -1,19 +1,64 @@
+from utils.productsLoad import listOfMapProduct
 from flaskext.mysql import MySQL 
+from classes.Database import Database
+from utils.productsLoad import listOfMapProduct
+
+
+class DatabaseProducts(Database):
 
 
 
-class DatabaseProducts:
 
-    def __init__(self):
-        self.mysql = MySQL()
 
-    def config(self, app):
-        self.mysql.init_app(app)
+    def get_all_products(self):
+        conn, cursor = self.getConnection()
+        query = "SELECT * FROM products"
+        try:
+            cursor.execute(query)
+            data = cursor.fetchall()
+            conn.close()
+            return {'error':None,'products':listOfMapProduct(data)}
+        except Exception as e:
+            return {'error':str(e),'message':'There was an error retrieving product'}
 
-    def getConnection(self):
-        conn = self.mysql.connect()
-        cursor = conn.cursor()
-        return conn, cursor
+    def get_filtered_by_categories_products(self,catid):
+        conn, cursor = self.getConnection()
+        query = "SELECT * FROM products WHERE categories_id=%s"
+        tuple=(catid)
+        try:
+            cursor.execute(query,catid)
+            data = cursor.fetchall()
+            conn.close()
+            return {'error':None,'products':listOfMapProduct(data)}
+        except Exception as e:
+            return {'error':str(e),'message':'There was an error retrieving product'}
+
+    def get_filtered_by_store_products(self,storeid):
+        conn, cursor = self.getConnection()
+        query = "SELECT * FROM products WHERE vendors_id=%s"
+        tuple = (storeid)
+        try:
+            cursor.execute(query,tuple)
+            data = cursor.fetchall()
+            conn.close()
+            return {'error':None,'products':listOfMapProduct(data)}
+        except Exception as e:
+            return {'error':str(e),'message':'There was an error retrieving product'}
+
+
+    def get_all_categories(self):
+        conn, cursor = self.getConnection()
+        query = "SELECT * FROM categories"
+        try:
+            cursor.execute(query)
+            data = cursor.fetchall()
+            conn.close()
+            return {'error':None,'categories':data}
+        except Exception as e:
+            return {'error':str(e),'message':'There was an error retrieving categories'}
+
+
+
 
     def register_product(self,data):
         conn,cursor = self.getConnection()
@@ -21,6 +66,7 @@ class DatabaseProducts:
         tuple = (data['name'],data['price'],data['categories_id'],data['models_id'],data['vendors_id'],data['media_id'],data['is_available'],data['is_stocked'],data['stock_quantity'])
         try:
             cursor.execute(query,tuple)
+            conn.commit()
             conn.close()
             return {'error':None,'message':'Product created'}
         except Exception as e:
@@ -28,14 +74,15 @@ class DatabaseProducts:
 
     def register_categories(self,data):
         conn, cursor = self.getConnection()
-        query = "INSERT INTO categories(name,media_id,macro_id) VALUES(%s,%s,%s)"
         if 'media_id' in data.keys():
-            media = data['media_id']
+            query = "INSERT INTO categories(name,media_id,macro_id) VALUES(%s,%s,%s)"
+            tuple = (data['name'],data['media_id'],data['macro_id'])
         else:
-            media = None
-        tuple = (data['name'],media,data['macro_id'])
+            query = "INSERT INTO categories(name,macro_id) VALUES(%s,%s)"
+            tuple = (data['name'],data['macro_id'])
         try:
             cursor.execute(query,tuple)
+            conn.commit()
             conn.close()
             return {'error':None,'message':'Category created'}
         except Exception as e:
@@ -45,7 +92,7 @@ class DatabaseProducts:
     def register_macros(self,data):
         conn, cursor = self.getConnection()
         query = "INSERT INTO macros(name) VALUES(%s)"
-        tuple = data['name']
+        tuple = (data['name'])
         try:
             cursor.execute(query,tuple)#,data['media_id']
             conn.commit()

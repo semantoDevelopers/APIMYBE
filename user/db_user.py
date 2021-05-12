@@ -1,20 +1,11 @@
 from flaskext.mysql import MySQL
 import os
+from classes.Database import Database
 from utils.encryption import generate_secret_key_user,shaCryptData
 import json
 
-class DatabaseUser:
+class DatabaseUser(Database):
 
-    def __init__(self):
-        self.mysql = MySQL()
-
-    def config(self, app):
-        self.mysql.init_app(app)
-
-    def getConnection(self):
-        conn = self.mysql.connect()
-        cursor = conn.cursor()
-        return conn, cursor
 
     def check_if_data_is_retrieved(self, data):
 

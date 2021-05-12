@@ -1,6 +1,6 @@
 from flask import Blueprint,request
 from .db_products import DatabaseProducts
-from utils.checkheaders import check_headers,RequestType
+from utils.checkheaders import giveResponse
 from utils.errors import * 
 from dotenv import load_dotenv
 import os
@@ -16,22 +16,23 @@ db_products = DatabaseProducts()
 #Route for getting all products
 @products.route('/',methods=['GET'])
 def get_all_products():
-    pass
+    return giveResponse(db_products.get_all_products(),secret_key,request)
 
 #Route for get filtered products by storeid
-@products.route('/<int:storeid>',methods=['GET'])
+@products.route('/?storeid=<int:storeid>',methods=['GET'])
 def get_products_of_store(storeid):
-    pass
+    return giveResponse(db_products.get_filtered_by_store_products(storeid),secret_key,request)
+
 
 #Route for get filtered products by category id
-@products.route('/<int:catid>',methods=['GET'])
+@products.route('/filter?catid=<int:catid>',methods=['GET'])
 def get_products_of_category(catid):
-    pass
+    return giveResponse(db_products.get_filtered_by_categories_products(catid),secret_key,request)
 
 #Route for getting categories
 @products.route('/categories',methods=['GET'])
 def get_categories():
-    pass
+    return giveResponse(db_products.get_all_categories(),secret_key,request)
 
 
 ##ADMIN ROUTES##
@@ -40,40 +41,18 @@ def get_categories():
 #Route for posting products
 @products.route('/', methods=['POST'])
 def post_products():
-    check_result = check_headers(request,secret_key,RequestType.JSON)
-    if check_result==200:
-        data = db_products.register_product(request.json)
-        return data
-    else:
-        if check_result==403:
-            return error403
-        elif check_result==400:
-            return error400   
+    return giveResponse(db_products.register_product(request.json),secret_key,request)
+    
 
 #Route for posting categories
 @products.route('/categories',methods=['POST'])
 def post_categories():
-    check_result = check_headers(request,secret_key,RequestType.JSON)
-    if check_result==200:
-        data = db_products.register_categories(request.json)
-        return data
-    else:
-        if check_result==403:
-            return error403
-        elif check_result==400:
-            return error400    
+    return giveResponse(db_products.register_categories(request.json),secret_key,request)
+    
 
 #Route for posting categories
 @products.route('/macros',methods=['POST'])
 def post_macros():
-    check_result = check_headers(request,secret_key,RequestType.JSON)
-    if check_result==200:
-        data = db_products.register_macros(request.json)
-        return data
-    else:
-        if check_result==403:
-            return error403
-        elif check_result==400:
-            return error400
+    return giveResponse(db_products.register_macros(request.json),secret_key,request)
 
 
