@@ -19,13 +19,13 @@ def get_all_products():
     return giveResponse(db_products.get_all_products(),secret_key,request)
 
 #Route for get filtered products by storeid
-@products.route('/?storeid=<int:storeid>',methods=['GET'])
+@products.route('/storeid=<int:storeid>',methods=['GET'])
 def get_products_of_store(storeid):
     return giveResponse(db_products.get_filtered_by_store_products(storeid),secret_key,request)
 
 
 #Route for get filtered products by category id
-@products.route('/filter?catid=<int:catid>',methods=['GET'])
+@products.route('/catid=<int:catid>',methods=['GET'])
 def get_products_of_category(catid):
     return giveResponse(db_products.get_filtered_by_categories_products(catid),secret_key,request)
 

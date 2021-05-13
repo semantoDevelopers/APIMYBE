@@ -40,6 +40,7 @@ class DatabaseProducts(Database):
         try:
             cursor.execute(query,tuple)
             data = cursor.fetchall()
+
             conn.close()
             return {'error':None,'products':listOfMapProduct(data)}
         except Exception as e:
