@@ -21,8 +21,9 @@ def get_media(filename):
 
 @media.route('/',methods=['POST'])
 def post_media():
-    check_result = check_headers(request,secret_key,RequestType.FORM)
     print(request.form)
+    check_result = check_headers(request,secret_key,RequestType.FORM)
+    #print(request.form)
     if(check_result==200):
         if 'file' not in request.files:
             return error400
