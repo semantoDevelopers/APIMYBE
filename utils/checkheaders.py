@@ -13,12 +13,12 @@ def check_headers(request, secret_key, type):
         secret_key_to_check = request.headers['SECRETKEY']
         print(secret_key_to_check == secret_key)
         if secret_key_to_check == secret_key:
-            print('dio  infame')
+            print(request.headers['Content-Type'])
             if request.method=="GET":
                 return 200
-            elif request.headers['Content-Type'] == 'application/json' and type.value==1 :
+            elif 'application/json' in request.headers['Content-Type'] and type.value==1 :
                 return 200
-            elif request.headers['Content-Type'] == 'multipart/form-data' and type.value==2 :
+            elif 'multipart/form-data' in request.headers['Content-Type'] and type.value==2 :
                 return 200
             
             else:

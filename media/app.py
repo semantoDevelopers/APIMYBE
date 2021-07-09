@@ -6,7 +6,7 @@ from utils.errors import *
 from dotenv import load_dotenv
 from .db_media import DatabaseMedia
 import os
-
+import json
 media = Blueprint('media',__name__)
 load_dotenv()
 secret_key = os.environ['API_SECRET_KEY']
@@ -21,14 +21,14 @@ def get_media(filename):
 
 @media.route('/',methods=['POST'])
 def post_media():
-    print(request.form)
     check_result = check_headers(request,secret_key,RequestType.FORM)
-    #print(request.form)
+    print(check_result)
     if(check_result==200):
         if 'file' not in request.files:
             return error400
         file = request.files['file']
         if file.filename == '':
+            
             return error400
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -39,4 +39,5 @@ def post_media():
         if check_result==403:
             return error403
         elif check_result==400:
+            print('here')
             return error400
