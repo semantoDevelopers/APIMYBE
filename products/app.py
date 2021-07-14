@@ -45,7 +45,7 @@ def post_products():
 
 
 #Route for posting macro products
-@products.route('/variant' methods['POST'])
+@products.route('/variant', methods['POST'])
 def post_variant_products():
     return giveResponse(db_products.register_macro_products(request.json),secret_key,request)
 
