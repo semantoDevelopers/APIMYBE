@@ -42,7 +42,13 @@ def get_categories():
 @products.route('/', methods=['POST'])
 def post_products():
     return giveResponse(db_products.register_product(request.json),secret_key,request)
-    
+
+
+#Route for posting macro products
+@products.route('/variant' methods['POST'])
+def post_variant_products():
+    return giveResponse(db_products.register_macro_products(request.json),secret_key,request)
+
 
 #Route for posting categories
 @products.route('/categories',methods=['POST'])

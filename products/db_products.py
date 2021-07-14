@@ -72,6 +72,19 @@ class DatabaseProducts(Database):
             return {'error':None,'message':'Product created'}
         except Exception as e:
             return  {'error':str(e),'message':'There was an error on creating the product'}
+    
+
+    def register_variant_product(self,data):
+        conn,cursor = self.getConnection()
+        query = "INSERT INTO variant_products(id_product,price,categories_id,models_id,vendors_id,media_id,is_available,is_stocked,stock_quantity) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        tuple = (data['id_product'],data['price'],data['categories_id'],data['models_id'],data['vendors_id'],data['media_id'],data['is_available'],data['is_stocked'],data['stock_quantity'])
+        try:
+            cursor.execute(query,tuple)
+            conn.commit()
+            conn.close()
+            return {'error':None, 'message':f'Variant of {data['id_product']} product created'}
+        except Exception as e:
+            return {'error':str(e),'message':'There was an error on creating the variant of product'}
 
     def register_categories(self,data):
         conn, cursor = self.getConnection()
