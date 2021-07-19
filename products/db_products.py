@@ -82,7 +82,7 @@ class DatabaseProducts(Database):
             cursor.execute(query,tuple)
             conn.commit()
             conn.close()
-            return {'error':None, 'message':f'Variant of {data['id_product']} product created'}
+            return {'error':None, 'message':f"Variant of {data['id_product']} product created"}
         except Exception as e:
             return {'error':str(e),'message':'There was an error on creating the variant of product'}
 
