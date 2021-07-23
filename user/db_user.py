@@ -6,17 +6,6 @@ import json
 
 class DatabaseUser(Database):
 
-
-    def check_if_data_is_retrieved(self, data):
-
-        if len(data) < 1:
-            print(len(data))
-            print(data)
-            return False
-        else:
-            print(len(data))
-            return True
-
     def get_user_data(self, email, password):
         conn, cursor = self.getConnection()
         query = "SELECT * FROM users WHERE email=%s AND password=%s"
@@ -27,10 +16,26 @@ class DatabaseUser(Database):
 
             data = fetchedData[0]
             conn.close()
-            return {'error': None, 'user': {'id': data[0], 'secret_key': data[1], 'name': data[2], 'surname': data[3], 'email': data[4], 'phone_number': data[6], 'address': data[7], 'fiscal_code': data[8], 'favorites': data[9], 'media_id': data[10]}}
+            return {
+                    'error': None,
+                    'message':{
+                        'user':{
+                            'id': data[0],
+                            'secret_key':data[1],
+                            'name': data[2],
+                            'surname': data[3],
+                            'email': data[4],
+                            'phone_number': data[6],
+                            'address': data[7],
+                            'fiscal_code': data[8],
+                            'favorites': data[9],
+                            'media_id': data[10]
+                            }
+                        }
+                    }
         else:
             conn.close()
-            return {'error':'Email or Password incorrect','user':{}}
+            return {'error':'Email or Password incorrect','message':None}
 
 
     def register_user_data(self,data):

@@ -7,6 +7,10 @@ from review.app import review,db_review
 from payment.app import payment
 from media.app import media,db_media
 from models.app import models,db_models
+from stripe_tasks import stripe_functions
+from vendor.app import vendor,db_vendor
+
+
 
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER']=os.environ['MYSQL_DATABASE_USER']
@@ -24,6 +28,7 @@ db_products.config(app)
 db_order.config(app)
 db_media.config(app)
 db_models.config(app)
+db_vendor.config(app)
 
 
 #REGISTER BLUEPRINTS
@@ -34,7 +39,12 @@ app.register_blueprint(review,url_prefix='/review')
 app.register_blueprint(payment,url_prefix='/payment')
 app.register_blueprint(media,url_prefix='/media')
 app.register_blueprint(models,url_prefix='/models')
+app.register_blueprint(vendor,url_prefix='/vendor')
 
 
+@app.route('/stripe/test')
+def test_stripe():
+    stripe_functions.pay()
+    return 'Operation complete'
 if __name__=="__main__":
 	app.run(host='0.0.0.0', debug=True)
