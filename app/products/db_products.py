@@ -76,8 +76,8 @@ class DatabaseProducts(Database):
 
     def register_variant_product(self,data):
         conn,cursor = self.getConnection()
-        query = "INSERT INTO variant_products(id_product,price,categories_id,models_id,vendors_id,media_id,is_available,is_stocked,stock_quantity) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        tuple = (data['id_product'],data['price'],data['categories_id'],data['models_id'],data['vendors_id'],data['media_id'],data['is_available'],data['is_stocked'],data['stock_quantity'])
+        query = "INSERT INTO variant_products(id_product,price,categories_id,models_id,vendors_id,media_id,is_available,is_stocked,stock_quantity,attribute_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        tuple = (data['id_product'],data['price'],data['categories_id'],data['models_id'],data['vendors_id'],data['media_id'],data['is_available'],data['is_stocked'],data['stock_quantity'],data['attribute_id'])
         try:
             cursor.execute(query,tuple)
             conn.commit()
@@ -124,4 +124,4 @@ class DatabaseProducts(Database):
             conn.close()
             return {'error':None,'message':'Attributes created'}
         except Exception as e:
-            return  {'error':str(e),'message':'There was an error on creating the macro'}
+            return  {'error':str(e),'message':'There was an error on creating the attributes'}
