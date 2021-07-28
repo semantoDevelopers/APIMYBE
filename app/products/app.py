@@ -63,7 +63,7 @@ def post_macros():
 
 #Route for posting attributes
 @products.route('/attributes',methods=['POST'])
-def post_macros():
+def post_attributes():
     return giveResponse(db_products.register_attributes(request.json),secret_key,request)
 
 

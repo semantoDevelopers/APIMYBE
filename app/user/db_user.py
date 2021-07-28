@@ -46,6 +46,8 @@ class DatabaseUser(Database):
         else:
             query = "INSERT INTO users(secret_key,name,surname,email,password,phone_number,address,token) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
             tuple = (generate_secret_key_user(),data['name'],data['surname'],shaCryptData(data['email']),shaCryptData(data['password']),data['phone_number'],data['address'],data['token'])
+            TEST = (query,tuple)
+            print(TEST)
             try:
                 cursor.execute(query,tuple)
                 conn.commit()
