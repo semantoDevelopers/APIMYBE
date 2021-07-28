@@ -47,7 +47,7 @@ def post_products():
 #Route for posting macro products
 @products.route('/variant', methods=['POST'])
 def post_variant_products():
-    return giveResponse(db_products.register_variant_products(request.json),secret_key,request)
+    return giveResponse(db_products.register_variant_product(request.json),secret_key,request)
 
 
 #Route for posting categories
@@ -60,5 +60,10 @@ def post_categories():
 @products.route('/macros',methods=['POST'])
 def post_macros():
     return giveResponse(db_products.register_macros(request.json),secret_key,request)
+
+#Route for posting attributes
+@products.route('/attributes',methods=['POST'])
+def post_macros():
+    return giveResponse(db_products.register_attributes(request.json),secret_key,request)
 
 
