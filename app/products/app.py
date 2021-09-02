@@ -1,7 +1,8 @@
+
 from flask import Blueprint,request
 from app.products.db_products import DatabaseProducts
 from app.utils.checkheaders import giveResponse
-from app.utils.errors import * 
+from app.utils.errors import *
 from dotenv import load_dotenv
 import os
 
@@ -37,7 +38,7 @@ def get_categories():
 
 ##ADMIN ROUTES##
 
- 
+
 #Route for posting products
 @products.route('/', methods=['POST'])
 def post_products():
@@ -54,7 +55,7 @@ def post_variant_products():
 @products.route('/categories',methods=['POST'])
 def post_categories():
     return giveResponse(db_products.register_categories(request.json),secret_key,request)
-    
+
 
 #Route for posting categories
 @products.route('/macros',methods=['POST'])
@@ -65,5 +66,3 @@ def post_macros():
 @products.route('/attributes',methods=['POST'])
 def post_attributes():
     return giveResponse(db_products.register_attributes(request.json),secret_key,request)
-
-
