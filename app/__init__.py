@@ -13,10 +13,16 @@ from app.models.app import models,db_models
 from app.stripe_tasks import stripe_functions
 from app.vendor.app import vendor,db_vendor
 from app.events.events import check_transaction,db_events
+from flask_cors import CORS
 
 
 
 app = Flask(__name__)
+
+#SET CORS ORIGIN
+CORS(app)
+
+
 app.config['MYSQL_DATABASE_USER']=os.environ['MYSQL_DATABASE_USER']
 app.config['MYSQL_DATABASE_PASSWORD']=os.environ['MYSQL_DATABASE_PASSWORD']
 app.config['MYSQL_DATABASE_DB']=os.environ['MYSQL_DATABASE_DB']
